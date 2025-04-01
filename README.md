@@ -43,7 +43,6 @@ Obstoječi konkurenti vključujejo:
 ### Prednosti (S)
 - **Enostavna uporaba** aplikacije, primerna za vse vrste kolesarjev.
 - **Povezovanje kolesarjev** preko označevanja točk in deljenja poti.
-- **Personalizacija poti** (filtri za vrsto poti, težavnost).
 - **Skupnost uporabnikov**, ki si izmenjujejo izkušnje in nasvete.
 
 ### Slabosti (W)

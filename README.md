@@ -17,7 +17,7 @@ Moja aplikacija je zasnovana za širok spekter kolesarjev. Ciljna skupina vklju�
 - **Skupnosti kolesarjev**, ki želijo deliti svoje izkušnje z drugimi in povezovati svojo izkušnjo s širšim kolesarskim svetom.
 
 **Zakaj je drugačna:**
-Za razliko od drugih aplikacij, kot je **Strava**, ki se osredotočajo na merjenje uspešnosti in tekmovanja, **DOT-Maps** ampak se osredotoča na odkrivanje novih točk in deljenje osebnih izkušenj. Poudarek je na povezovanju kolesarjev, označevanju pomembnih točk na poti ter omogočanju enostavne izmenjave informacij med uporabniki.
+Za razliko od drugih aplikacij, kot je **Strava**, ki se osredotočajo na merjenje uspešnosti in tekmovanja, **DOT-Maps** se osredotoča na odkrivanje novih točk in deljenje osebnih izkušenj. Poudarek je na povezovanju kolesarjev, označevanju pomembnih točk na poti ter omogočanju enostavne izmenjave informacij med uporabniki.
 
 ## Analiza trga
 

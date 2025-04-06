@@ -1,132 +1,130 @@
 <!DOCTYPE html>
 <html lang="sl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOT-Maps</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            position: relative;
-        }
-        header h1 {
-            margin: 0;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        header img {
-            width: 80px;
-            height: 80px;
-        }
-        nav {
-            display: flex;
-            gap: 20px;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        .login-btn {
-            background-color: #ff6600;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-        }
-        main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 80vh;
-        }
-        .container {
-            background: white;
-            padding: 2rem;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            width: 80%;
-            max-width: 1000px;
-        }
-        section {
-            margin-bottom: 2rem;
-        }
-        section h2 {
-            color: #333;
-        }
-        section p {
-            color: #555;
-            line-height: 1.6;
-        }
-        .spacer {
-            margin-right: 50px; /* Dodal sem prostor med "Kontakt" in "Log In" */
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DOT-Maps</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      position: relative;
+      height: 100px;
+    }
+
+    .logo {
+      height: 80px;
+      width: 80px;
+      position: relative;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transform: scale(2.5);
+      transform-origin: left center;
+      pointer-events: none;
+    }
+
+    .header-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .login-btn {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+    }
+
+    .container {
+      background: white;
+      padding: 2rem;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      width: 80%;
+      max-width: 1000px;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    section h2 {
+      color: #333;
+    }
+
+    section p {
+      color: #555;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <img src="logo.png" alt="DOT-Maps Logo">
-        <h1>DOT-Maps</h1>
-        <nav>
-            <a href="#about">O nas</a>
-            <a href="#features">Funkcije</a>
-            <a href="#community">Skupnost</a>
-            <a href="#contact">Kontakt</a>
-        </nav>
-        <div class="spacer"></div> <!-- Prostor med "Kontakt" in "Log In" -->
-        <button class="login-btn" onclick="window.open('login.html', '_blank')">Log In</button>
-    </header>
-
-    <main>
-        <div class="container">
-            <section id="about">
-                <h2>O nas</h2>
-                <p>DOT-Maps je aplikacija, ki omogoča kolesarjem, da označijo začetek svojih poti ali zanimive točke na zemljevidu, delijo izkušnje in odkrijejo nove lokacije, ki jih lahko obiščejo. Aplikacija je namenjena tako začetnikom kot izkušenim kolesarjem, ki želijo raziskovati nove poti in povezovati se z lokalno kolesarsko skupnostjo.</p>
-            </section>
-
-            <section id="features">
-                <h2>Funkcije</h2>
-                <p>DOT-Maps omogoča uporabnikom, da označijo začetek svojih kolesarskih poti, prilagodijo točke na zemljevidu, izpolnijo informacije, kot so opis, slike, težavnost poti, dolžina, in nato te točke delijo z drugimi kolesarji. Aplikacija omogoča enostavno navigacijo, filtriranje poti glede na vrsto terena in težavnost, ter omogoča kolesarjem, da gradijo in sodelujejo v skupnosti.</p>
-            </section>
-
-            <section id="community">
-                <h2>Skupnost</h2>
-                <p>Skupnost DOT-Maps vključuje kolesarje vseh starosti in spretnosti, ki si izmenjujejo izkušnje, nasvete in priljubljene točke. Povezovanje s kolesarsko skupnostjo omogoča iskanje novih poti in deljenje uporabnih informacij, ki izboljšajo izkušnjo vsakega kolesarja.</p>
-            </section>
-
-            <section id="contact">
-                <h2>Kontakt</h2>
-                <p>Če imate vprašanja ali predloge, nas kontaktirajte na <a href="mailto:info@dot-maps.com">info@dot-maps.com</a>.</p>
-            </section>
-        </div>
-    </main>
-
-    <!-- Prijavni obrazec (login.html) -->
-    <div id="login-modal" style="display:none;">
-        <div style="padding:20px; background-color:white; border-radius:10px; box-shadow:0px 0px 10px rgba(0, 0, 0, 0.1); width: 300px;">
-            <h3>Prijava</h3>
-            <form>
-                <label for="username">Uporabniško ime:</label><br>
-                <input type="text" id="username" name="username"><br><br>
-                <label for="password">Geslo:</label><br>
-                <input type="password" id="password" name="password"><br><br>
-                <input type="submit" value="Prijavi se">
-            </form>
-        </div>
+  <header>
+    <div class="logo">
+      <img src="logo.png" alt="DOT-Maps Logo" />
     </div>
+    <h1 class="header-title">DOT-Maps</h1>
+    <div class="nav-container">
+      <nav>
+        <a href="#about">O nas</a>
+        <a href="#features">Funkcije</a>
+        <a href="#community">Skupnost</a>
+        <a href="#contact">Kontakt</a>
+      </nav>
+      <button class="login-btn" onclick="window.open('login.html', '_blank')">Log In</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+    
+    </div>
+  </main>
 </body>
 </html>

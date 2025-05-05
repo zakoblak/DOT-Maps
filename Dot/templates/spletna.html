@@ -4,225 +4,147 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DOT-Maps</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  
+  <!-- Povezava do Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
-    header {
-      background-color: #333;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 2rem;
-      position: relative;
-      height: 100px;
-    }
-
-    .logo {
-      height: 80px;
-      width: 80px;
-      position: relative;
-    }
-
-    .logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      transform: scale(2.5);
-      transform-origin: left center;
-      pointer-events: none;
-    }
-
-    .header-title {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 24px;
-      margin: 0;
-      white-space: nowrap;
-    }
-
-    .nav-container {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    nav {
-      display: flex;
-      gap: 20px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-size: 18px;
-    }
-
-    .login-btn {
-      background-color: #ff6600;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      font-size: 16px;
-      border-radius: 5px;
-    }
-
-    main {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 3rem 0;
-    }
-
-    .container {
-      background: white;
-      padding: 2rem;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      width: 80%;
-      max-width: 1000px;
-    }
-
-    section {
-      margin-bottom: 2rem;
-    }
-
-    section h2 {
-      color: #333;
-    }
-
-    section p {
-      color: #555;
-      line-height: 1.6;
-    }
-
-    .flash {
-      text-align: center;
-      margin-top: 1rem;
-    }
-
-    .flash-success {
-      color: green;
-    }
-
-    .flash-error {
-      color: red;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.5);
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 2rem;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 400px;
-    }
-
-    .modal-content input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    .modal-content button {
-      width: 100%;
-      padding: 10px;
-      background-color: #333;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .close {
-      float: right;
-      font-size: 24px;
-      cursor: pointer;
-    }
-  </style>
+  <!-- Povezava do Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
   <header>
     <div class="logo">
-      <img src="templates/logo.png" alt="DOT-Maps Logo" />
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
     </div>
-    <h1 class="header-title">DOT-Maps</h1>
+    <h1 class="header-title">
+      <a href="{{ url_for('domov') }}" style="color: white; text-decoration: none;">DOT-Maps</a>
+    </h1>
     <div class="nav-container">
       <nav>
-        <a href="#about">O nas</a>
-        <a href="#contact">Kontakt</a>
+        <a href="{{ url_for('onas') }}">O nas</a>
+        <a href="{{ url_for('kontak') }}">Kontakt</a>
       </nav>
       <button class="login-btn" onclick="openLogin()">Log In</button>
-      <button class="login-btn" onclick="openRegister()">Registracija</button>
+      <button class="register-btn" onclick="openRegister()">Registracija</button>
     </div>
   </header>
-
+  
   <main>
     <div class="container">
-      <section id="about">
-        <h2>O DOT-Maps</h2>
-        <p>DOT-Maps je aplikacija, ki omogoča kolesarjem, da označijo začetek svojih poti ali zanimive točke na zemljevidu, delijo izkušnje in odkrijejo nove lokacije, ki jih lahko obiščejo.</p>
-        <p>Aplikacija je namenjena tako začetnikom kot izkušenim kolesarjem, ki želijo raziskovati nove poti in povezovati se z lokalno kolesarsko skupnostjo.</p>
-      </section>
-
-      <section id="contact">
-        <h2>Kontakt</h2>
-        <p>Email: info@dot-maps.si</p>
-        <p>Telefon: +386 40 123 456</p>
+      <section id="map-section">
+        <h2>Zemljevid Slovenije</h2>
+        <div id="map" style="height: 500px;"></div> 
       </section>
     </div>
   </main>
 
-
-  <div id="loginModal" class="modal">
+  <div id="pointModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeLogin()">&times;</span>
-      <h2>Prijava</h2>
-      <form method="POST" action="{{ url_for('login') }}">
-        <input type="text" name="username" placeholder="Uporabniško ime" required />
-        <input type="password" name="password" placeholder="Geslo" required />
-        <button type="submit">Prijavi se</button>
+      <span class="close" onclick="closePointModal()">&times;</span>
+      <h2>Označi točko</h2>
+      <form id="pointForm">
+        <input type="text" id="pointName" placeholder="Ime točke" required />
+        <textarea id="pointDescription" placeholder="Opis točke" required></textarea>
+        <input type="number" id="pointDifficulty" placeholder="Težavnost (1-5)" min="1" max="5" required />
+        Dodaj sliko:
+        <input type="file" id="pointImage" accept="image/*" />
+        <button type="submit">Shrani točko</button>
       </form>
     </div>
   </div>
 
-  <div id="registerModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeRegister()">&times;</span>
-      <h2>Registracija</h2>
-      <form method="POST" action="{{ url_for('register') }}">
-        <input type="text" name="username" placeholder="Uporabniško ime" required />
-        <input type="password" name="password" placeholder="Geslo" required />
-        <button type="submit">Registriraj se</button>
-      </form>
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeLogin()">&times;</span>
+        <h2>Prijava</h2>
+        <form method="POST" action="{{ url_for('login') }}">
+          <input type="text" name="username" placeholder="Uporabniško ime" required />
+          <input type="password" name="password" placeholder="Geslo" required />
+          <button type="submit">Prijavi se</button>
+        </form>
+      </div>
     </div>
-  </div>
+  
+    <div id="registerModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeRegister()">&times;</span>
+        <h2>Registracija</h2>
+        <form method="POST" action="{{ url_for('register') }}">
+          <input type="text" name="username" placeholder="Uporabniško ime" required />
+          <input type="password" name="password" placeholder="Geslo" required />
+          <button type="submit">Registriraj se</button>
+        </form>
+      </div>
+    </div>
 
   <script>
+    var map = L.map('map').setView([46.0511, 14.5051], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    var currentLatLng;
+    var markers = [];
+
+    function displayMarkers() {
+      fetch('/get_points')
+        .then(response => response.json())
+        .then(data => {
+          data.features.forEach(function (point) {
+            var lat = point.geometry.coordinates[1];
+            var lon = point.geometry.coordinates[0];
+            var marker = L.marker([lat, lon]).addTo(map);
+            marker.bindPopup(`
+              <b>${point.properties.name}</b><br>
+              ${point.properties.description}<br>
+              Težavnost: ${point.properties.difficulty}
+            `);
+            markers.push(marker);
+          });
+        });
+    }
+
+    map.on('click', function(e) {
+      currentLatLng = e.latlng;
+      openPointModal();
+    });
+
+    function openPointModal() {
+      document.getElementById('pointModal').style.display = "flex";
+    }
+
+    function closePointModal() {
+      document.getElementById('pointModal').style.display = "none";
+    }
+
+    document.getElementById('pointForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var pointData = {
+        lat: currentLatLng.lat,
+        lon: currentLatLng.lng,
+        properties: {
+          name: document.getElementById('pointName').value,
+          description: document.getElementById('pointDescription').value,
+          difficulty: document.getElementById('pointDifficulty').value,
+          image: document.getElementById('pointImage').files[0]?.name || ""
+        }
+      };
+      fetch('/save_point', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pointData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Točka uspešno shranjena!');
+        closePointModal();
+        displayMarkers();
+      });
+    });
+
     function openLogin() {
-      document.getElementById("loginModal").style.display = "block";
+      document.getElementById("loginModal").style.display = "flex";
     }
 
     function closeLogin() {
@@ -230,7 +152,7 @@
     }
 
     function openRegister() {
-      document.getElementById("registerModal").style.display = "block";
+      document.getElementById("registerModal").style.display = "flex";
     }
 
     function closeRegister() {
@@ -241,13 +163,11 @@
       const loginModal = document.getElementById("loginModal");
       const registerModal = document.getElementById("registerModal");
 
-      if (event.target == loginModal) {
-        loginModal.style.display = "none";
-      }
-      if (event.target == registerModal) {
-        registerModal.style.display = "none";
-      }
+      if (event.target == loginModal) loginModal.style.display = "none";
+      if (event.target == registerModal) registerModal.style.display = "none";
     };
+
+    displayMarkers();
   </script>
 </body>
 </html>

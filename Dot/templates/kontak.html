@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontakt - DOT-Maps</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+    </div>
+    <h1 class="header-title">
+      <a href="{{ url_for('domov') }}" style="color: white; text-decoration: none;">DOT-Maps</a>
+    </h1>
+    <div class="nav-container">
+      <nav>
+        <a href="{{ url_for('onas') }}">O nas</a>
+        <a href="{{ url_for('kontak') }}">Kontakt</a>
+      </nav>
+      <button class="login-btn" onclick="openLogin()">Log In</button>
+      <button class="login-btn" onclick="openRegister()">Registracija</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section>
+        <h2>Kontakt</h2>
+        <p>Email: info@dot-maps.si</p>
+        <p>Telefon: +386 40 123 456</p>
+      </section>
+    </div>
+  </main>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLogin()">&times;</span>
+      <h2>Prijava</h2>
+      <form method="POST" action="{{ url_for('login') }}">
+        <input type="text" name="username" placeholder="Uporabniško ime" required />
+        <input type="password" name="password" placeholder="Geslo" required />
+        <button type="submit">Prijavi se</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeRegister()">&times;</span>
+      <h2>Registracija</h2>
+      <form method="POST" action="{{ url_for('register') }}">
+        <input type="text" name="username" placeholder="Uporabniško ime" required />
+        <input type="password" name="password" placeholder="Geslo" required />
+        <button type="submit">Registriraj se</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openLogin() {
+      document.getElementById("loginModal").style.display = "block";
+    }
+
+    function closeLogin() {
+      document.getElementById("loginModal").style.display = "none";
+    }
+
+    function openRegister() {
+      document.getElementById("registerModal").style.display = "block";
+    }
+
+    function closeRegister() {
+      document.getElementById("registerModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      const loginModal = document.getElementById("loginModal");
+      const registerModal = document.getElementById("registerModal");
+
+      if (event.target == loginModal) {
+        loginModal.style.display = "none";
+      }
+      if (event.target == registerModal) {
+        registerModal.style.display = "none";
+      }
+    };
+  </script>
+</body>
+</html>

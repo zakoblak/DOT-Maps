@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>  
 <html lang="sl">
 <head>
   <meta charset="UTF-8" />
@@ -23,18 +23,26 @@
     <div class="nav-container">
       <nav>
         <a href="{{ url_for('onas') }}">O nas</a>
-        <a href="{{ url_for('kontak') }}">Kontakt</a>
+        <a href="{{ url_for('kontakt') }}">Kontakt</a>
       </nav>
-      <button class="login-btn" onclick="openLogin()">Log In</button>
-      <button class="register-btn" onclick="openRegister()">Registracija</button>
+
+      {% if 'username' in session %}
+        <div class="user-greeting">
+          <span>Dobrodošel, {{ session['username'] }}!</span>
+          <a href="{{ url_for('logout') }}" class="logout-btn">Odjava</a>
+        </div>
+      {% else %}
+        <button class="login-btn" onclick="openLogin()">Prijava</button>
+        <button class="register-btn" onclick="openRegister()">Registracija</button>
+      {% endif %}
     </div>
   </header>
-  
+
   <main>
     <div class="container">
       <section id="map-section">
         <h2>Zemljevid Slovenije</h2>
-        <div id="map" style="height: 500px;"></div> 
+        <div id="map" style="height: 500px;"></div>
       </section>
     </div>
   </main>
@@ -54,29 +62,29 @@
     </div>
   </div>
 
-    <div id="loginModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeLogin()">&times;</span>
-        <h2>Prijava</h2>
-        <form method="POST" action="{{ url_for('login') }}">
-          <input type="text" name="username" placeholder="Uporabniško ime" required />
-          <input type="password" name="password" placeholder="Geslo" required />
-          <button type="submit">Prijavi se</button>
-        </form>
-      </div>
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLogin()">&times;</span>
+      <h2>Prijava</h2>
+      <form method="POST" action="{{ url_for('login') }}">
+        <input type="text" name="username" placeholder="Uporabniško ime" required />
+        <input type="password" name="password" placeholder="Geslo" required />
+        <button type="submit">Prijavi se</button>
+      </form>
     </div>
-  
-    <div id="registerModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeRegister()">&times;</span>
-        <h2>Registracija</h2>
-        <form method="POST" action="{{ url_for('register') }}">
-          <input type="text" name="username" placeholder="Uporabniško ime" required />
-          <input type="password" name="password" placeholder="Geslo" required />
-          <button type="submit">Registriraj se</button>
-        </form>
-      </div>
+  </div>
+
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeRegister()">&times;</span>
+      <h2>Registracija</h2>
+      <form method="POST" action="{{ url_for('register') }}">
+        <input type="text" name="username" placeholder="Uporabniško ime" required />
+        <input type="password" name="password" placeholder="Geslo" required />
+        <button type="submit">Registriraj se</button>
+      </form>
     </div>
+  </div>
 
   <script>
     var map = L.map('map').setView([46.0511, 14.5051], 7);
@@ -94,21 +102,25 @@
           data.features.forEach(function (point) {
             var lat = point.geometry.coordinates[1];
             var lon = point.geometry.coordinates[0];
+
             var marker = L.marker([lat, lon]).addTo(map);
             marker.bindPopup(`
               <b>${point.properties.name}</b><br>
               ${point.properties.description}<br>
               Težavnost: ${point.properties.difficulty}
             `);
+
             markers.push(marker);
           });
-        });
+        })
+        .catch(error => console.error('Napaka pri nalaganju točk:', error));
     }
 
     map.on('click', function(e) {
       currentLatLng = e.latlng;
       openPointModal();
     });
+
 
     function openPointModal() {
       document.getElementById('pointModal').style.display = "flex";
@@ -120,6 +132,7 @@
 
     document.getElementById('pointForm').addEventListener('submit', function(event) {
       event.preventDefault();
+
       var pointData = {
         lat: currentLatLng.lat,
         lon: currentLatLng.lng,
@@ -130,6 +143,7 @@
           image: document.getElementById('pointImage').files[0]?.name || ""
         }
       };
+
       fetch('/save_point', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -144,7 +158,7 @@
     });
 
     function openLogin() {
-      document.getElementById("loginModal").style.display = "flex";
+      document.getElementById("loginModal").style.display = "block";
     }
 
     function closeLogin() {
@@ -152,7 +166,7 @@
     }
 
     function openRegister() {
-      document.getElementById("registerModal").style.display = "flex";
+      document.getElementById("registerModal").style.display = "block";
     }
 
     function closeRegister() {
@@ -163,8 +177,12 @@
       const loginModal = document.getElementById("loginModal");
       const registerModal = document.getElementById("registerModal");
 
-      if (event.target == loginModal) loginModal.style.display = "none";
-      if (event.target == registerModal) registerModal.style.display = "none";
+      if (event.target == loginModal) {
+        loginModal.style.display = "none";
+      }
+      if (event.target == registerModal) {
+        registerModal.style.display = "none";
+      }
     };
 
     displayMarkers();

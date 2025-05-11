@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 from tinydb import TinyDB, Query
-import os
 
 app = Flask(__name__)
 app.secret_key = 'skrivni_kljuc'
@@ -24,10 +23,16 @@ def login():
     user = users.get((User.username == username) & (User.password == password))
 
     if user:
+        session['username'] = username 
         flash('Prijava uspešna!', 'success')
     else:
         flash('Napačno uporabniško ime ali geslo.', 'error')
 
+    return redirect(url_for('domov'))
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
     return redirect(url_for('domov'))
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -50,18 +55,12 @@ def register():
 
 @app.route('/save_point', methods=['POST'])
 def save_point():
-    """
-    Shrani točko z informacijami, ki jih uporabnik vnese.
-    """
     point_data = request.json
     points_table.insert(point_data)
     return jsonify({"status": "success", "message": "Točka uspešno shranjena!"}), 200
 
 @app.route('/get_points', methods=['GET'])
 def get_points():
-    """
-    Pridobi vse shranjene točke in jih vrne v GeoJSON formatu.
-    """
     points = points_table.all()
     geojson = {"type": "FeatureCollection", "features": []}
     for point in points:
@@ -79,9 +78,9 @@ def get_points():
 def onas():
     return render_template('onas.html')
 
-@app.route('/kontak')
-def kontak():
-    return render_template('kontak.html')
+@app.route('/kontakt')
+def kontakt():
+    return render_template('kontakt.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
